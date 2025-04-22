@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <%- include("./partials/head") %>
+  <title>Blog</title>
+</head>
+<body>
+  <%- include("./partials/nav") %>
+
+  <div class="mt-4 ms-5">
+    <h2><%= blog.title %></h2>
+    <img src="<%= blog.coverImageURL %>" alt="Cover Image" width="200px">
+    <pre><%= blog.body %></pre>
+  </div>
+
+  <div class="mt-4 ms-5">
+    <img src="<%= blog.createdBy.profileImageURL || '/default-avatar.png' %>" width="50px">
+    <%= blog.createdBy.fullName %>
+  </div>
+
+  <div class="container mt-4">
+    <h1>Comments (<%=comments.length%>)</h1>
+
+    <% if (locals.user) { %>
+      <form action="/blog/comment/<%= blog._id %>" method="POST">
+        <div class="mb-3">
+          <input type="text" name="content" class="form-control" placeholder="Enter your comment" required />
+          <button class="btn btn-primary mt-2" type="submit">Add</button>
+        </div>
+      </form>
+
+      
+    <% } %>
+    <div class="mt-5">
+      <% comments.forEach(comment => { %>
+        <div>
+          <img src="<%= comment.createdBy.profileImageURL || '/default-avatar.png' %>" width="50px" />
+          <%= comment.createdBy.fullName %>
+          <pre><%= comment.content %></pre>
+        </div>
+      <% }) %>
+    </div>
+  </div>
+  
+
+  <%- include("./partials/script") %>
+</body>
+</html>
